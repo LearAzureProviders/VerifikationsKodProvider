@@ -6,22 +6,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using VerifikationsKodProvider.Data.Context;
-using VerifikationsKodProvider.Functions;
 using VerifikationsKodProvider.Models;
 
 namespace VerifikationsKodProvider.Services;
 
-public class VerificationService(ILogger<VerificationService> logger, IServiceProvider serviceProvider, IVerificationService verificationService)
+public class VerificationService(ILogger<VerificationService> logger, IServiceProvider serviceProvider) : IVerificationService
 {
     private readonly ILogger<VerificationService> _logger = logger;
     private readonly IServiceProvider _serviceProvider = serviceProvider;
-    private readonly IVerificationService _verificationService = verificationService;
 
-
-
-
-
-            public string GenerateServiceBusEmailRequest(EmailRequest emailRequest)
+        public string GenerateServiceBusEmailRequest(EmailRequest emailRequest)
         {
             try
             {
@@ -139,7 +133,10 @@ public class VerificationService(ILogger<VerificationService> logger, IServicePr
                     ",
                         PlainText = $"Please verify your account using this verification code {code}. If you did not request this code, it is posible that someone else is trying to access to account<span style = 'color: #0041cd;' >{verificationRequest.Email}</ span >. This email can't receive replies.For more information, visit the silicons help center"
                     };
-                }
+                
+
+                return emailRequest;
+            }
 
             }
             catch (Exception ex)
